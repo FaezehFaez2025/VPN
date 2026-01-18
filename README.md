@@ -20,11 +20,21 @@ sudo bash install.sh
 
 Cloud/provider firewall: allow **inbound UDP/51820** to this server.
 
-If you use `ufw`:
+If you use a local firewall:
+
+### Option A: `ufw` (install if missing)
 
 ```bash
+sudo apt-get update -y
+sudo apt-get install -y ufw
 sudo ufw allow 51820/udp
+sudo ufw enable
+sudo ufw status verbose
 ```
+
+### Option B: no local firewall (`ufw` not installed)
+
+Nothing to run locally; just ensure your cloud/provider firewall allows UDP/51820.
 
 ## Add client(s)
 
