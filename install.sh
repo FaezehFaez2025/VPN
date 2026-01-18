@@ -24,13 +24,15 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -y
+# NOTE: Do NOT install "resolvconf" here.
+# On Debian 12, pulling in resolvconf can remove/disable systemd-resolved and break DNS
+# (e.g. "curl: (6) Could not resolve host ..."). The server wg0 config does not need it.
 apt-get install -y --no-install-recommends \
   wireguard \
   iptables \
   qrencode \
   curl \
-  ca-certificates \
-  resolvconf
+  ca-certificates
 
 OUT_IFACE="$(ip route show default 0.0.0.0/0 | awk '{for (i=1;i<=NF;i++) if ($i=="dev") print $(i+1)}' | head -n1)"
 if [[ -z "${OUT_IFACE}" ]]; then
