@@ -19,6 +19,47 @@ This will:
 - Start and enable `wg-quick@wg0`
 - Create an initial client config under `/root/VPN/clients/`
 
+<details>
+<summary><strong>Optional: verify the install (server-side) + fix DNS if needed</strong></summary>
+
+On the server:
+
+```bash
+sudo systemctl --no-pager --full status wg-quick@wg0
+sudo wg show
+sudo ss -ulnp | grep -E ':(51820)\\b' || true
+```
+
+If the server loses DNS (example: `curl: (6) Could not resolve host`)
+
+On Debian 12, installing `resolvconf` can remove/disable `systemd-resolved`, which can break DNS.
+
+Quick fix (set resolv.conf)
+
+```bash
+sudo sh -c 'printf "nameserver 1.1.1.1\\nnameserver 8.8.8.8\\n" > /etc/resolv.conf'
+```
+
+Then verify:
+
+```bash
+getent hosts api.ipify.org
+curl -4 https://api.ipify.org
+```
+
+Make it persistent (recommended)
+
+Reinstall and re-enable systemd-resolved:
+
+```bash
+sudo apt-get update -y
+sudo apt-get install -y systemd-resolved
+sudo systemctl enable --now systemd-resolved
+sudo ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+```
+
+</details>
+
 ## Add a new client (laptop, iPhone, etc.)
 
 ```bash
