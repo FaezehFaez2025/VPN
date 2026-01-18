@@ -2,12 +2,6 @@
 
 This repo folder contains scripts to run a **WireGuard VPN** on this server. Your laptop/iPhone can connect to it, and then your public IP on the internet becomes **this server’s public IP** (so sites “think you’re in” the server’s country).
 
-## Server requirements
-
-- Debian/Ubuntu VPS with a public IPv4
-- You can run commands as root (`sudo`)
-- Your provider firewall/security group allows inbound **UDP/51820** (or your chosen port)
-
 ## Install / bring up VPN (server)
 
 On the server:
